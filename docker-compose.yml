@@ -1,5 +1,5 @@
 postgres:
-  image: postgres:9.4.5
+  image: mdillon/postgis:9.5
   environment:
     POSTGRES_USER: beetrack
     POSTGRES_PASSWORD: B33tr4ck
@@ -20,6 +20,7 @@ beetrack:
   links:
     - postgres
     - redis
+    - geoserver
   volumes:
     - .:/beetrack
   ports:
@@ -37,3 +38,10 @@ sidekiq:
     - .:/beetrack
   env_file:
     - .beetrack.env
+
+geoserver:
+  image: kartoza/geoserver
+  ports:
+    - 8080:8080
+  links:
+    - postgres:postgis
