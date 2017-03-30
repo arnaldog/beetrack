@@ -1,0 +1,39 @@
+postgres:
+  image: postgres:9.4.5
+  environment:
+    POSTGRES_USER: beetrack
+    POSTGRES_PASSWORD: B33tr4ck
+  ports:
+    - '5432:5432'
+  volumes:
+    - beetrack-postgres:/var/lib/postgresql/data
+
+redis:
+  image: redis:3.0.5
+  ports:
+    - '6379:6379'
+  volumes:
+    - beetrack-redis:/var/lib/redis/data
+
+beetrack:
+  build: .
+  links:
+    - postgres
+    - redis
+  volumes:
+    - .:/beetrack
+  ports:
+    - '8000:8000'
+  env_file:
+    - .beetrack.env
+
+sidekiq:
+  build: .
+  command: bundle exec sidekiq -C config/sidekiq.yml
+  links:
+    - postgres
+    - redis
+  volumes:
+    - .:/beetrack
+  env_file:
+    - .beetrack.env
