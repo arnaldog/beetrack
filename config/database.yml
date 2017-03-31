@@ -4,14 +4,23 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 #
+
+default: &default
+  adapter:            postgis
+  schema_search_path: public, postgis
+
 development:
   url: <%= ENV['DATABASE_URL'].gsub('?', '_development?') %>
+  <<: *default
 
 test:
   url: <%= ENV['DATABASE_URL'].gsub('?', '_test?') %>
+  <<: *default
 
 staging:
   url: <%= ENV['DATABASE_URL'].gsub('?', '_staging?') %>
+  <<: *default
 
 production:
   url: <%= ENV['DATABASE_URL'].gsub('?', '_production?') %>
+  <<: *default

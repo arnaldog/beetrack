@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20170331023358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
+
+  create_table "waypoints", force: :cascade do |t|
+    t.datetime  "sent_at"
+    t.string    "vehicle_identifier"
+    t.geography "lonlat",             limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.datetime  "created_at",                                                                  null: false
+    t.datetime  "updated_at",                                                                  null: false
+    t.index ["lonlat"], name: "index_waypoints_on_lonlat", using: :gist
+    t.index ["vehicle_identifier"], name: "index_waypoints_on_vehicle_identifier", using: :btree
+  end
 
 end

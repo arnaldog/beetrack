@@ -20,7 +20,7 @@ beetrack:
   links:
     - postgres
     - redis
-    - geoserver
+    # - geoserver
   volumes:
     - .:/beetrack
   ports:
@@ -39,9 +39,9 @@ sidekiq:
   env_file:
     - .beetrack.env
 
-geoserver:
-  image: kartoza/geoserver
-  ports:
-    - 8080:8080
-  links:
-    - postgres:postgis
+# geoserver:
+#   image: kartoza/geoserver
+#   ports:
+#     - 8080:8080
+#   links:
+#     - postgres:postgis

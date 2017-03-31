@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sent_at: 2017-03-31 01:42:54
+  vehicle_identifier: MyString
+
+two:
+  sent_at: 2017-03-31 01:42:54
+  vehicle_identifier: MyString
