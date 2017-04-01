@@ -15,7 +15,7 @@ redis:
   volumes:
     - beetrack-redis:/var/lib/redis/data
 
-beetrack:
+web:
   build: .
   links:
     - postgres
@@ -23,6 +23,7 @@ beetrack:
     # - geoserver
   volumes:
     - .:/beetrack
+    - beetrack-bundle:/bundle
   ports:
     - '8000:8000'
   env_file:
@@ -36,6 +37,7 @@ sidekiq:
     - redis
   volumes:
     - .:/beetrack
+    - beetrack-bundle:/bundle
   env_file:
     - .beetrack.env
 
