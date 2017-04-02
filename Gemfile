@@ -45,6 +45,8 @@ group :development, :test do
   gem 'factory_girl_rails'
 
   gem 'faker'
+
+  gem 'rails-controller-testing'
 end
 
 group :development do
@@ -80,6 +82,9 @@ gem 'activerecord-postgis-adapter'
 
 # Reverse proxy for geoserver
 gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
+
+# Bower for javascript pipeline
+gem 'bower-rails', '~> 0.11.0'
 
 
 

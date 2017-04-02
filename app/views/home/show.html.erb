@@ -1,0 +1,58 @@
+<!--
+<h1>Home#show</h1>
+<p>Find me in app/views/home/show.html.erb</p>
+-->
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+
+<div id="map" style="width: 1200px; height: 600px"></div>
+
+<script type="application/javascript">
+
+    var tileLayer = new L.TileLayer(
+        'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        }
+    );
+
+    var map = new L.Map('map', {
+        layers: [
+            tileLayer
+        ]
+    });
+
+    var waypoints = L.tileLayer.wms('geoserver/beetrack/wms', {
+        layers: 'beetrack:waypoints',
+        tiled: true,
+        format: 'image/png',
+        epsg: 4326,
+        transparent: true,
+        continuousWorld: true
+    }).addTo(map);
+
+    var trackings = L.tileLayer.wms('geoserver/beetrack/wms', {
+        layers: 'beetrack:trackings',
+        tiled: true,
+        format: 'image/png',
+        epsg: 4326,
+        transparent: true,
+        continuousWorld: true
+    }).addTo(map);
+
+    map.setView([52.5, -1.8], 6);
+
+    var baseMaps = {
+        "Open Street Map": tileLayer
+    };
+
+    var overlayMaps = {
+        "Last Position Tracking": trackings,
+        "All History": waypoints
+    };
+
+
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+</script>
