@@ -53,7 +53,7 @@ describe Api::V1::GpsController, type: :controller do
 
     it 'enqueue a new job' do
       ActiveJob::Base.queue_adapter = :test
-      
+
       expect {
         subject()
       }.to have_enqueued_job(TrackerJob)

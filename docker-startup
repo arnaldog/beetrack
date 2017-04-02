@@ -1,17 +1,22 @@
 #!/bin/bash
 
+echo "Cleanup docker containers"
+docker-compose stop
+docker-compose rm -f
+
+echo "Building latest version of web image"
+docker-compose build web
+docker-compose build sidekiq
+
+echo "Creating data volume containers"
 docker volume create --name beetrack-postgres
 docker volume create --name beetrack-redis
 docker volume create --name beetrack-bundle
 docker volume create --name beetrack-geoserver-data-dir
 
+echo "Performing database operations"
 docker-compose run --user "$(id -u):$(id -g)" web rake db:reset
 docker-compose run --user "$(id -u):$(id -g)" web rake db:migrate
 
+echo "Running containers"
 docker-compose up
-
-
-## Create a job
-# docker-­compose run --­­user "$(id -­u):$(id -­g)" beetrack rails g job tracker
-# rails generate rspec:install
-# bundle exec rspec

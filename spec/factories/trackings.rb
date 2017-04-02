@@ -4,7 +4,7 @@ FactoryGirl.define do
     waypoint nil
     lonlat {
     	address = Faker::Address
-    	Waypoint::GEO_FACTORY.point(address.latitude, address.longitude)
+    	Waypoint::GEO_FACTORY.point(address.longitude, address.latitude)
     }
     
   end
