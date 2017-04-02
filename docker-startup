@@ -3,6 +3,7 @@
 docker volume create --name beetrack-postgres
 docker volume create --name beetrack-redis
 docker volume create --name beetrack-bundle
+docker volume create --name beetrack-geoserver-data-dir
 
 docker-compose run --user "$(id -u):$(id -g)" web rake db:reset
 docker-compose run --user "$(id -u):$(id -g)" web rake db:migrate

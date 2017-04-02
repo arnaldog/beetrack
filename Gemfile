@@ -43,6 +43,8 @@ group :development, :test do
 
   # Factory girl for testing MVO
   gem 'factory_girl_rails'
+
+  gem 'faker'
 end
 
 group :development do
@@ -76,6 +78,8 @@ gem 'redis-rails', '~> 5.0.0'
 # Geospatial adapter
 gem 'activerecord-postgis-adapter'
 
+# Reverse proxy for geoserver
+gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 
 
 

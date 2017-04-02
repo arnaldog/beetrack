@@ -1,11 +1,11 @@
 FactoryGirl.define do
-
-
-  factory :waypoint do
-    sent_at "2017-03-31 02:33:59"
+  factory :tracking do
+    vehicle nil
+    waypoint nil
     lonlat {
     	address = Faker::Address
     	Waypoint::GEO_FACTORY.point(address.latitude, address.longitude)
     }
+    
   end
 end
