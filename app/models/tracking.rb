@@ -13,4 +13,24 @@ class Tracking < ApplicationRecord
     track.lonlat = waypoint.lonlat
     track.save
   end
+
+  def self.bbox
+    bbox_hash_from Tracking.pluck('st_extent(lonlat::geometry)').first
+  end
+
+
+  private
+
+  def self.bbox_hash_from bbox_wkt
+    min, max = bbox_wkt.sub('BOX', '').sub('(', '').sub(')', '').split(',')
+    min_lon, min_lat = min.split
+    max_lon, max_lat = max.split
+
+    {
+        min_latitude: min_lat.to_f,
+        max_latitude: max_lat.to_f,
+        min_longitude: min_lon.to_f,
+        max_longitude: max_lon.to_f
+    }
+  end
 end

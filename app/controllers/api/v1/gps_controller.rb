@@ -8,6 +8,10 @@ module Api
         render json: { success: true } if vehicle.valid?
       end
 
+      def bbox
+        render json: Tracking.bbox
+      end
+
       private
 
       def enqueue_waypoint

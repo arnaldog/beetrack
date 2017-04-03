@@ -83,8 +83,8 @@ gem 'activerecord-postgis-adapter'
 # Reverse proxy for geoserver
 gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 
-# Bower for javascript pipeline
-gem 'bower-rails', '~> 0.11.0'
+# Leaflet for Rails
+gem 'leaflet-rails'
 
 
 
