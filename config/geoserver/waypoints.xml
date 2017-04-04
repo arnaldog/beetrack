@@ -1,0 +1,17 @@
+<featureType>
+  <name>waypoints</name>
+  <nativeName>waypoints</nativeName>
+  <title>waypoints</title>
+  <srs>EPSG:4326</srs>
+  <srsNative>EPSG:4326</srsNative>
+  <attributes>
+    <attribute>
+      <name>lonlat</name>
+      <binding>com.vividsolutions.jts.geom.Point</binding>
+    </attribute>
+    <attribute>
+      <name>created_at</name>
+      <binding>java.util.Date</binding>
+    </attribute>
+  </attributes>
+</featureType>

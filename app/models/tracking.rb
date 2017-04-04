@@ -22,7 +22,10 @@ class Tracking < ApplicationRecord
   private
 
   def self.bbox_hash_from bbox_wkt
-    min, max = bbox_wkt.sub('BOX', '').sub('(', '').sub(')', '').split(',')
+
+    bbox_wkt ||= 'BOX(0 0, 0 0)'
+    min, max = bbox_wkt.sub('BOX', '').sub('(', '').sub(')', '').split(',') unless bbox_wkt.blank?
+
     min_lon, min_lat = min.split
     max_lon, max_lat = max.split
 
