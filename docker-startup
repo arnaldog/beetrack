@@ -1,35 +1,13 @@
 #!/bin/bash
 
-echo "Cleanup docker containers"
-docker-compose stop
-docker-compose rm -f
-
-echo "Building latest version of web image"
-docker-compose build web
-docker-compose build sidekiq
-
-echo "Creating data volume containers"
-docker volume create --name beetrack-postgres
-docker volume create --name beetrack-redis
-docker volume create --name beetrack-bundle
-docker volume create --name beetrack-geoserver-data-dir
+./docker-clean
 
 echo "Performing database operations"
-docker-compose run --user "$(id -u):$(id -g)" web rake db:reset
-docker-compose run --user "$(id -u):$(id -g)" web rake db:migrate
+./docker-wrapper web rake db:reset
+./docker-wrapper web rake db:migrate
 
 echo "Running containers"
-docker-compose up
+docker-compose up -d
 
+docker-compose run web bundle exec rake geoserver:all
 
-# Creation of workspace
-curl -v -u admin:geoserver -XPOST -H "Content-type: text/xml" -d "<workspace><name>beetrack</name></workspace>" http://localhost:8080/geoserver/rest/workspaces
-
-# Creation of datastore
-curl -v -u admin:geoserver -XPOST -T config/geoserver/datastore.xml -H "Content-type: text/xml" http://localhost:8080/geoserver/rest/workspaces/beetrack/datastores
-
-# Creation of trackings layer
-curl -v -u admin:geoserver -XPOST -T config/geoserver/trackings.xml -H "Content-type: text/xml" http://localhost:8080/geoserver/rest/workspaces/beetrack/datastores/beetrack_production/featuretypes
-
-# Creation of waypoints layer
-curl -v -u admin:geoserver -XPOST -T config/geoserver/waypoings.xml -H "Content-type: text/xml" http://localhost:8080/geoserver/rest/workspaces/beetrack/datastores/beetrack_production/featuretypes

@@ -20,20 +20,16 @@ RUN mkdir -p $INSTALL_PATH
 # on Docker's website extensively.
 WORKDIR $INSTALL_PATH
 
-# Ensure gems are cached and only get updated when they change. This will
-# drastically increase build times when your gems do not change.
-COPY Gemfile Gemfile
 
 # --- Add this to your Dockerfile ---
-ENV BUNDLE_GEMFILE=$INSTALL_PATH/Gemfile \
-  BUNDLE_JOBS=2 \
-  BUNDLE_PATH=/bundle
-
-RUN bundle install
+#ENV BUNDLE_GEMFILE=$INSTALL_PATH/Gemfile \
+#  BUNDLE_PATH=/bundle
 
 # Copy in the application code from your work station at the current directory
 # over to the working directory.
 COPY . .
+
+RUN bundle install
 
 # Provide dummy data to Rails so it can pre-compile assets.
 RUN bundle exec rake RAILS_ENV=production DATABASE_URL=postgresql://user:pass@127.0.0.1/dbname SECRET_TOKEN=pickasecuretoken assets:precompile

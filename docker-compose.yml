@@ -1,51 +1,60 @@
-postgres:
-  image: mdillon/postgis:9.5
-  environment:
-    POSTGRES_USER: beetrack
-    POSTGRES_PASSWORD: B33tr4ck
-  ports:
-    - '5432:5432'
-  volumes:
-    - beetrack-postgres:/var/lib/postgresql/data
+version: '2'
 
-redis:
-  image: redis:3.0.5
-  ports:
-    - '6379:6379'
-  volumes:
-    - beetrack-redis:/var/lib/redis/data
+services:
+  postgres:
+    image: mdillon/postgis:9.5
+    environment:
+      POSTGRES_USER: beetrack
+      POSTGRES_PASSWORD: B33tr4ck
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
 
-web:
-  build: .
-  links:
-    - postgres
-    - redis
-    - geoserver
-  volumes:
-    - .:/beetrack
-    - beetrack-bundle:/bundle
-  ports:
-    - '8000:8000'
-  env_file:
-    - .beetrack.env
+  redis:
+    image: redis:3.0.5
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis:/var/lib/redis/data
 
-sidekiq:
-  build: .
-  command: bundle exec sidekiq -C config/sidekiq.yml
-  links:
-    - postgres
-    - redis
-  volumes:
-    - .:/beetrack
-    - beetrack-bundle:/bundle
-  env_file:
-    - .beetrack.env
+  web:
+    build: .
+    depends_on:
+      - postgres
+      - redis
+      - geoserver
+    volumes:
+      - .:/beetrack
+#      - bundle:/bundle
+    ports:
+      - '8000:8000'
+    env_file:
+      - .beetrack.env
 
-geoserver:
-  image: kartoza/geoserver
-  ports:
-    - 8080:8080
-  links:
-    - postgres:postgis
-  volumes:
-    - beetrack-geoserver-data-dir:/opt/geoserver/data_dir
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/beetrack
+      - bundle:/bundle
+    env_file:
+      - .beetrack.env
+
+  geoserver:
+    image: kartoza/geoserver
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    volumes:
+      - geoserver:/opt/geoserver/data_dir
+
+volumes:
+  redis:
+  postgres:
+  geoserver:
+  bundle:
