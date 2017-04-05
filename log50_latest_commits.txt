@@ -1,0 +1,10 @@
+a852096 Rake tasks for deploy branches
+080c170 Geoserver configuration added
+31f6af4 Map view centered
+35d7d01 Minor fixes
+3663c69 Gps Controller Created
+73d6440 Add Tracking table to display latest vehicles
+56e67dd Waypoint test added
+e005f61 Waypoint model created
+83fd1f7 Component Stack added
+c9d22db Initial commit

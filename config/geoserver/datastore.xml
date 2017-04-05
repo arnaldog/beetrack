@@ -3,7 +3,7 @@
   <connectionParameters>
     <host>postgres</host>
     <port>5432</port>
-    <database>beetrack</database>
+    <database>beetrack_development</database>
     <user>beetrack</user>
     <passwd>B33tr4ck</passwd>
     <dbtype>postgis</dbtype>

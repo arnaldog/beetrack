@@ -1,24 +1,57 @@
-# README
+# BEETRACK GPS
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+# Architecture
+- Postgres/PostGIS for high performance geographic data handle
+- Geoserver for tile rendering (this allow render thousands of points without browser overhead)
+- Ruby on Rails for api and web endpoints
+- Redis as queue for process api waypoints
 
-* Ruby version
+# Deployment
+- Docker for deploy all services
 
-* System dependencies
+ Data Model
 
-* Configuration
+ - Vehicle 
+ - Waypoint 
+ - Tracking (relation between vehicle and the last waypoint) to be shown in map
 
-* Database creation
+# Startup
 
-* Database initialization
+## Building containers
+- docker-compose build web
+- docker-compsoe build sidekiq
 
-* How to run the test suite
+## Setting up steps
 
-* Services (job queues, cache servers, search engines, etc.)
+Each of these steps should be performed in order.
 
-* Deployment instructions
+### Setting up the database
 
-* ...
+- ./docker-wrapper web rake db:reset
+- ./docker-wrapper web rake db:migrate 
+
+### Startup all services
+
+### Setting up layer configurations
+- ./docker-wrapper web bundle exec rake geoserver:all
+
+### Optional
+Populate with points 
+- ./docker-wrapper web bundle exec rake data:all
+
+
+### UI.
+
+- Choose between all waypoints or all vehicles last position using the layer switcher.
+
+
+## Run All tests
+ - ./docker-wrapper web bundle exec rspec
+
+
+
+Requirements
+ - Docker Installed
+ - Ports 8080 and 8000 should be unused
+

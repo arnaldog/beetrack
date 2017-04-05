@@ -7,15 +7,6 @@ var tileLayer = new L.TileLayer(
     }
 );
 
-var waypoints = L.tileLayer.wms('geoserver/beetrack/wms', {
-    layers: 'beetrack:waypoints',
-    tiled: true,
-    format: 'image/png',
-    epsg: 4326,
-    transparent: true,
-    continuousWorld: true
-});
-
 var trackings = L.tileLayer.wms('geoserver/beetrack/wms', {
     layers: 'beetrack:trackings',
     tiled: true,
@@ -29,7 +20,7 @@ var trackings = L.tileLayer.wms('geoserver/beetrack/wms', {
 
 $(document).ready(function () {
     var map = new L.Map('map', {
-        layers: [tileLayer, waypoints, trackings]
+        layers: [tileLayer, trackings]
     });
 
     var baseMaps = {
@@ -37,8 +28,7 @@ $(document).ready(function () {
     };
 
     var overlayMaps = {
-        "Last Position Tracking": trackings,
-        "All History": waypoints
+        "Last Position Tracking": trackings
     };
 
 

@@ -9,6 +9,10 @@
       <binding>com.vividsolutions.jts.geom.Point</binding>
     </attribute>
     <attribute>
+      <name>vehicle_identifier</name>
+      <binding>java.lang.String</binding>
+    </attribute>
+    <attribute>
       <name>created_at</name>
       <binding>java.util.Date</binding>
     </attribute>

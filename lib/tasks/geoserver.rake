@@ -22,15 +22,25 @@ namespace :geoserver do
     raise 'cannot create workspace' unless $?.success?
   end
 
+  desc 'Creates default style'
+  task styles: :environment do
+    # %x[#{CURL} -d "<style><name>vehicles</name><filename>default_style.sld</filename></style>" #{GEOSERVER_URL}/styles]
+    %x[curl -v -u #{CREDENTIALS} -XPUT -H "Content-type: application/vnd.ogc.sld+xml" -d @config/geoserver/vehicles.sld #{GEOSERVER_URL}/styles/vehicles]
+    raise 'cannot create workspace' unless $?.success?
+  end
+
   desc 'Publish layers'
   task layers: :environment do
     %x[#{CURL} -XPOST -T config/geoserver/trackings.xml #{GEOSERVER_URL}/workspaces/#{WORKSPACE}/datastores/#{DATASTORE}/featuretypes]
     raise 'cannot publish waypoints' unless $?.success?
-
-    %x[#{CURL} -XPOST -T config/geoserver/waypoints.xml  #{GEOSERVER_URL}/workspaces/#{WORKSPACE}/datastores/#{DATASTORE}/featuretypes]
-    raise 'cannot publish trackings' unless $?.success?
   end
 
+  desc 'Apply style to layers'
+  task layer_style: :environment do
+    %x[#{CURL} -XPUT -d "<layer><defaultStyle><name>vehicles</name></defaultStyle></layer>" #{GEOSERVER_URL}/layers/beetrack:trackings]
+    raise 'cannot set up style for trackings' unless $?.success?
+  end 
+
   desc 'All'
-  task all: [:workspace, :datastore, :layers]
+  task all: [:workspace, :datastore, :styles, :layers, :layer_style]
 end

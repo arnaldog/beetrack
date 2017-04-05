@@ -11,6 +11,7 @@ class Tracking < ApplicationRecord
     track = Tracking.find_or_create_by(vehicle: waypoint.vehicle)
     track.waypoint = waypoint
     track.lonlat = waypoint.lonlat
+    track.vehicle_identifier = waypoint.vehicle.identifier
     track.save
   end
 
